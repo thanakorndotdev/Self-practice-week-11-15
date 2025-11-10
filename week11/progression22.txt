@@ -1,0 +1,77 @@
+Progression : Client Storage
+
+วันที่: 31 Oct 2025
+ไฟล์: client_storage.js
+หัวข้อ: การจัดการข้อมูลฝั่งผู้ใช้ด้วย LocalStorage, SessionStorage และ Theme Persistence
+
+[0] สรุปภาพรวม (What I built)
+
+เขียนระบบจำสถานะผู้ใช้ใน browser โดยไม่พึ่ง backend
+
+เก็บข้อมูลใน localStorage (ประวัติรูปหมา), sessionStorage (เวลาที่ดูครั้งล่าสุด), และ theme (dark/light)
+
+เพิ่มฟังก์ชัน clear data และ toggle ธีมด้วยการกดปุ่ม
+
+[1] โครงสร้างและขอบเขตความรับผิดชอบ (Separation of Concerns)
+
+client_storage.js = ชั้นจัดการข้อมูลทั้งหมดของฝั่ง client
+
+ไม่แตะ DOM ตรง ๆ มากเกินไป ยกเว้นบางส่วนที่จำเป็น (toggle class theme)
+
+UI อื่นสามารถใช้ API เดียวกันได้ เช่น clearDogHistory()
+
+[2] แนวคิดการออกแบบ (Design Concepts)
+
+ใช้ key-value storage ของ browser เพื่อคง state หลังรีเฟรช
+
+localStorage เก็บแบบถาวร, sessionStorage เก็บเฉพาะระหว่างเปิดแท็บ
+
+ออกแบบให้ clearDogHistory() เคลียร์ข้อมูลครบทุกประเภท
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+JSON.stringify() / JSON.parse() สำหรับเก็บ object
+
+ตรวจสอบข้อมูลก่อนใช้งาน (|| []) เพื่อกัน error
+
+ใช้ window binding เพื่อเรียกฟังก์ชันจาก HTML ได้
+
+[4] ประสบการณ์ที่ได้เรียนรู้
+
+localStorage ต้องแปลงข้อมูลเป็น string เสมอ
+
+ถ้าข้อมูลมีโครงสร้างซับซ้อน ควรมี helper แปลงเป็น JSON
+
+การ toggle class เป็นวิธีง่ายในการสลับธีม
+
+[5] แนวคิดเรื่องสถานะ (State Awareness)
+
+Storage ทำหน้าที่เป็น “memory” ของเว็บเพจ
+
+การรีโหลดหน้าไม่ทำให้ข้อมูลหาย → เว็บมีความต่อเนื่อง (Persistent UI)
+
+[6] ข้อดี–ข้อเสียที่ตระหนักได้
+
+ไม่ต้องพึ่ง server ก็เก็บข้อมูลได้
+
+ข้อมูลไม่ได้เข้ารหัส → ไม่เหมาะกับข้อมูลสำคัญ
+
+โหลดเร็วมาก เพราะอยู่ฝั่ง client
+
+ขนาดจำกัด (โดยเฉลี่ย 5MB ต่อ origin)
+
+[7] สิ่งที่ได้จากบทเรียนนี้ (Key Takeaways)
+
+เข้าใจกลไกการเก็บข้อมูลของ browser
+
+รู้จักเลือกประเภท storage ตามกรณีใช้งาน
+
+เรียนรู้หลักการ persist state และ event-driven UI
+
+[8] สิ่งที่อยากพัฒนาเพิ่มเติม (Next Steps)
+
+เขียน module storageHelper.js รวมฟังก์ชัน get/set แบบปลอดภัย
+
+เพิ่มระบบ theme ที่ซิงก์กับ OS (prefers-color-scheme)
+
+เขียนทดสอบง่าย ๆ เพื่อเช็กว่าข้อมูลถูกลบจริง

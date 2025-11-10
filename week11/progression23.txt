@@ -1,0 +1,89 @@
+Reflection — Lesson 4: Fetch API
+
+วันที่: 2 Nov 2025
+ไฟล์: fetch_api.js
+หัวข้อ: ดึงข้อมูลจาก REST API, จัดการ Promise และผูกข้อมูลกับ DOM
+
+[0] สรุปภาพรวม (What I built)
+
+สร้างระบบโหลดภาพหมาจาก Dog API ด้วย Fetch
+
+ใช้ async/await และ Promise.all เพื่อโหลดหลายภาพพร้อมกัน
+
+เชื่อมต่อผลลัพธ์เข้ากับ UI (DOM) และบันทึกลง localStorage
+
+[1] โครงสร้างของระบบ (System Flow)
+
+ผู้ใช้กดปุ่ม → เรียก loadDog()
+
+fetch() ดึงข้อมูลจาก API
+
+ผลลัพธ์ → ส่งต่อให้ renderDogs() วาดภาพบนหน้า
+
+เก็บ URL ลง localStorage และเวลาใน sessionStorage
+
+[2] สิ่งที่ฝึกได้ (What I Practiced)
+
+ใช้ async/await แทน .then() เพื่อให้โค้ดอ่านง่าย
+
+ตรวจสอบ res.ok เพื่อกัน error
+
+ใช้ try...catch จัดการความผิดพลาด gracefully
+
+[3] แนวคิดหลัก (Core Concepts)
+
+Fetch เป็น Promise-based API สำหรับ HTTP Request
+
+ใช้ await fetch() เพื่อให้โค้ดรอผลลัพธ์ก่อนทำขั้นถัดไป
+
+ใช้ response.json() แปลงข้อมูลเป็น Object
+
+[4] ปัญหาและการแก้ไข (Problem Solving)
+
+เจอ error ตอน response ไม่ OK → แก้ด้วย throw new Error()
+
+แสดง error ผ่าน alert() เพื่อให้ผู้ใช้รู้
+
+เพิ่มการล้าง container ก่อน render เพื่อกันภาพซ้ำ
+
+[5] สิ่งที่ได้เรียนรู้เพิ่มเติม (Deep Understanding)
+
+Promise.all สามารถโหลดข้อมูลพร้อมกันหลาย endpoint ได้
+
+await ใช้ได้เฉพาะใน async function เท่านั้น
+
+Fetch ไม่มี built-in timeout → ต้องใช้ AbortController ถ้าต้องการหยุดโหลด
+
+[6] ความเข้าใจเชิงโครงสร้าง (Architecture Thinking)
+
+แยก fetch logic ออกจาก render logic
+
+ทำให้โค้ด reusable และ maintain ได้ง่าย
+
+[7] ข้อดี–ข้อเสียของ Fetch API
+
+ใช้งานง่ายและไม่ต้องติดตั้งเพิ่ม
+
+รองรับ async/await เต็มรูปแบบ
+
+ไม่มี retry อัตโนมัติ
+
+ต้อง parse JSON เองทุกครั้ง
+
+[8] สิ่งที่ได้จากบทเรียนนี้ (Key Takeaways)
+
+เข้าใจการทำงานของ Fetch API ตั้งแต่ request → response
+
+เรียนรู้หลัก async programming
+
+ใช้ try-catch จัดการ error อย่างเป็นระบบ
+
+แยก logic ออกเป็นฟังก์ชันเล็ก ๆ
+
+[9] สิ่งที่อยากพัฒนาเพิ่มเติม (Next Steps)
+
+เพิ่ม loading indicator ระหว่าง fetch
+
+เพิ่มปุ่ม “ล้างประวัติ” เพื่อเชื่อมกับ storage
+
+เขียน wrapper API (api.js) รวม endpoint ทั้งหมดไว้ที่เดียว

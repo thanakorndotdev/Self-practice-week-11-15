@@ -1,0 +1,108 @@
+Progrssion : Client Storage & Fetch API
+
+วันที่: 31-2 Oct-Nov 2025
+ไฟล์ที่เกี่ยวข้อง: client_storage.js, fetch_api.js
+หัวข้อ: การเชื่อมต่อข้อมูลระหว่าง Front-End, API และ Storage บนฝั่ง Client
+
+[0] ภาพรวมของสิ่งที่สร้าง (Overview)
+
+ในบทนี้ได้พัฒนาเว็บเล็ก ๆ ที่สามารถ
+
+ดึงรูปหมาจาก Dog API ด้วย Fetch API (แบบ asynchronous)
+
+บันทึกประวัติและสถานะผู้ใช้ ด้วย Client Storage (localStorage, sessionStorage, cookie/theme)
+
+เชื่อมโยง UI ↔ Logic ↔ Data อย่างเป็นระบบโดยไม่ต้องพึ่ง backend
+
+โครงสร้างระบบ:
+
+ผู้ใช้กดปุ่ม → fetch_api.js ทำการ fetch() รูปหมา
+
+แสดงรูปบน DOM และบันทึกลง localStorage
+
+client_storage.js จัดการ theme, ประวัติ และเวลาการเข้าชม
+
+เมื่อรีเฟรชหน้า → ดึงข้อมูลเดิมจาก storage มา render ทันที
+
+[1] สิ่งที่ได้ฝึกฝนและเข้าใจ (Core Learning)
+Fetch API
+
+เข้าใจการทำงานของ fetch() ซึ่งคืนค่าเป็น Promise
+
+ใช้ async/await เพื่อเขียนโค้ดให้ลำดับอ่านง่ายกว่า .then()
+
+จัดการข้อผิดพลาดด้วย try...catch และเช็ก response.ok ก่อน parse JSON
+
+ใช้ Promise.all() เพื่อดึงหลาย resource พร้อมกันได้
+
+Client Storage
+
+เข้าใจความต่างระหว่าง:
+
+localStorage → เก็บข้อมูลถาวร (เช่น ประวัติรูปหมา)
+
+sessionStorage → เก็บเฉพาะระหว่าง session (เช่น เวลาดูครั้งล่าสุด)
+
+cookie → ใช้เก็บค่าขนาดเล็ก เช่น ธีม
+
+ฝึกใช้ JSON.stringify() และ JSON.parse() เพื่อเก็บ object ใน storage
+
+เรียนรู้วิธี toggle ธีมและจำค่าที่เลือกไว้ระหว่างการใช้งาน
+
+[2] แนวคิดเชิงออกแบบ (Design Principles)
+
+Separation of Concerns:
+แยก logic การ fetch, render, และจัดการ storage คนละไฟล์ → ดูแลและ debug ง่าย
+
+Idempotent Rendering:
+ทุกครั้งที่ render จะ “ล้าง DOM แล้วสร้างใหม่” เพื่อให้ผลลัพธ์สอดคล้องกับ state ล่าสุด
+
+State Persistence:
+เก็บสถานะ UI เช่น รูปที่เคยโหลดหรือธีมที่เคยเลือกไว้ เพื่อให้ผู้ใช้กลับมาแล้วยังเห็นเหมือนเดิม
+
+Graceful Error Handling:
+แสดงข้อความเมื่อ fetch ล้มเหลวแทนที่เว็บจะค้าง
+
+[3] ปัญหาที่พบและวิธีแก้ (Challenges & Solutions)
+ปัญหา	แนวทางแก้
+JSON.parse พังเมื่อข้อมูลผิดรูป	ครอบด้วย try/catch และ fallback ค่า default
+ภาพโหลดซ้ำทุกครั้ง	ใช้ innerHTML = '' เคลียร์ก่อน render
+ธีมไม่เปลี่ยนหลัง reload	เก็บค่าธีมไว้ใน localStorage และ apply ตอน load หน้า
+fetch ซ้ำเร็วเกินไป	ใช้ AbortController หรือ disable ปุ่มระหว่างโหลด
+[4] สิ่งที่ได้เรียนรู้เชิงเทคนิค (Technical Insights)
+
+fetch() เป็น asynchronous I/O ที่ทำงานนอก main thread → เว็บไม่ค้าง
+
+DOM manipulation ต้องทำอย่างระวังเพื่อไม่ให้เกิด reflow มากเกินไป
+
+localStorage มีข้อจำกัดขนาด (≈5MB ต่อ domain)
+
+การ render แบบใช้ DocumentFragment จะเร็วขึ้นเมื่อข้อมูลเยอะ
+
+[5] สิ่งที่ตระหนักและพัฒนาได้ (Reflection & Takeaways)
+
+เรียนรู้การเชื่อมโยงระบบ front-end อย่างครบวงจร — ตั้งแต่ดึงข้อมูลจนเก็บข้อมูลกลับ
+
+เข้าใจว่าการ “เก็บ state” คือหัวใจของเว็บที่มีความต่อเนื่อง (เช่น SPA หรือ PWA)
+
+รู้จักแยกความรับผิดชอบของโค้ด (Logic/UI/Storage) ช่วยลดความซับซ้อน
+
+การจัดการ error และ state ทำให้เว็บดู “มีชีวิต” และใช้งานจริงได้มากขึ้น
+
+เห็นภาพการพัฒนา web app ที่พึ่งพา API ภายนอกโดยไม่ต้องมี server ส่วนตัว
+
+[6] สิ่งที่อยากต่อยอด (Next Steps)
+
+เพิ่มระบบ infinite scroll เพื่อโหลดรูปเพิ่มเรื่อย ๆ
+
+ใช้ IndexedDB สำหรับเก็บข้อมูลขนาดใหญ่แทน localStorage
+
+เพิ่ม UI แจ้งสถานะการโหลด (loading indicator)
+
+รวม logic เป็นโมดูลกลาง (api.js, storageHelper.js) เพื่อใช้ซ้ำในโปรเจ็กต์อื่น
+
+[7] บทสรุป (Final Reflection)
+
+จากสองบทเรียนนี้ ได้เข้าใจพื้นฐานของ “เว็บที่มีสมอง” มากขึ้น —
+เว็บไม่เพียงแค่แสดงผล แต่ “ดึงข้อมูลมา–จัดการ–จำสถานะไว้” ได้เอง
+ซึ่งเป็นรากฐานของ Front-End Application สมัยใหม่ ที่ต้องเชื่อมกับ API และจัดการข้อมูลผู้ใช้อย่างปลอดภัย มีประสิทธิภาพ และยืดหยุ่นต่อการขยายในอนาคต 

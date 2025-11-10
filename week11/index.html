@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dog Gallery 🐕</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #fefefe;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #444;
+    }
+    #dog-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+    img:hover {
+      transform: scale(1.05);
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 1rem;
+      border: none;
+      background-color: #ffbf00;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ffaa00;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐾 Dog Gallery</h1>
+  <p>แสดงรูปหมาจาก Dog API และบันทึกข้อมูลไว้ใน Storage</p>
+  
+  <button id="load-btn">โหลดรูปหมาใหม่</button>
+  <div id="dog-container"></div>
+
+  <script src="client_storage.js"></script>
+  <script src="fetch_api.js"></script>
+</body>
+</html>
