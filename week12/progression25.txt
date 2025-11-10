@@ -1,0 +1,103 @@
+Progression : Asynchronous JavaScript (Async / Await & Promise Handling)
+วันที่: 6 Nov 2025
+ไฟล์: quoteManagement.js, fetchUtils.js, app.js, index.html
+หัวข้อ: การจัดการข้อมูลแบบอะซิงโครนัส (Asynchronous Data Fetching) ในระบบ Quote Manager
+
+[0] สรุปภาพรวม (What I built)
+
+สร้างเว็บแอป “Quote Manager” ที่โหลดข้อมูลคำคม (quotes) จาก API โดยใช้ Async/Await
+มีโครงสร้างแยกไฟล์ชัดเจน ได้แก่
+
+fetchUtils.js → จัดการการดึงข้อมูลจาก URL
+
+quoteManagement.js → ควบคุมการโหลดและประมวลผลข้อมูล quotes
+
+app.js → แสดงผลข้อมูลในหน้าเว็บและสร้าง UI
+
+index.html → ส่วนโครงสร้างหน้าเว็บ
+
+[1] โครงสร้างและขอบเขตความรับผิดชอบ (Separation of Concerns)
+
+fetchUtils.js: รวมฟังก์ชันดึงข้อมูลจาก API (getItems())
+
+fetchUtils
+
+quoteManagement.js: ใช้ getItems() เพื่อโหลด quotes ด้วย async/await
+
+quoteManagement
+
+app.js: จัดการ DOM (สร้างการ์ด quote แต่ละรายการ, ปุ่ม Edit/Delete)
+
+app
+
+index.html: ฟอร์มกรอก quote, รายชื่อ quote และเรียก app.js เป็น entry point
+
+index
+
+[2] แนวคิดการออกแบบ (Design Concepts)
+
+ใช้ Async/Await เพื่อจัดการงานดึงข้อมูลแบบไม่บล็อกหน้าเว็บ
+
+แยกชั้นการทำงานเป็น modular: logic, data, และ UI
+
+ใช้การสร้าง DOM element แบบ dynamic เพื่อแสดงผล quote ทั้งหมด
+
+รองรับ event หลังโหลด (DOMContentLoaded) เพื่อรันการโหลดข้อมูล
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+fetch() ดึงข้อมูลจาก API แล้วแปลงเป็น JSON
+
+ใช้ await เพื่อรอผล fetch ก่อนนำมาแสดง
+
+ใช้ try...catch สำหรับจัดการข้อผิดพลาด
+
+ใช้ forEach() เพื่อวนลูปสร้าง quote card ทีละรายการ
+
+ใช้ dataset เพื่อเก็บ id ของ quote ในแต่ละ element
+
+[4] ประสบการณ์ที่ได้เรียนรู้
+
+Async/Await ช่วยให้โค้ดอ่านง่ายและลำดับเหตุการณ์ชัดเจน
+
+ควรแยก logic กับ DOM ให้คนละไฟล์เพื่อง่ายต่อการดูแล
+
+การใช้โมดูล (import/export) ทำให้โครงสร้างโปรเจกต์เป็นระบบ
+
+ต้องมี error handling ครอบ fetch เสมอ เพราะอาจเกิด network error
+
+[5] แนวคิดเรื่องสถานะ (State Awareness)
+
+เมื่อหน้าโหลด (DOMContentLoaded) → loadQuotes() ถูกเรียก
+
+Promise จะรอจน fetch เสร็จก่อนสร้าง DOM
+
+ถ้าเกิด error ในการ fetch จะถูกแจ้งเตือนผ่าน alert(e)
+
+[6] ข้อดี–ข้อเสียที่ตระหนักได้
+ข้อดี	
+อ่านง่ายกว่าการใช้ callback	 
+รองรับการแยกไฟล์แบบโมดูล	
+ใช้ซ้ำได้ง่าย เช่น loadQuotes()	
+ข้อเสีย
+ถ้าไม่ได้ catch error อาจทำให้หน้าไม่โหลดข้อมูล
+ต้องตั้งค่า CORS ให้ backend หากอยู่ต่าง origin
+ถ้า network ช้า อาจต้องเพิ่ม loading state
+
+[7] สิ่งที่ได้จากบทเรียนนี้ (Key Takeaways)
+
+เข้าใจการใช้ Async/Await ในงานจริง
+
+แยก layer ของ data, logic, และ UI
+
+สร้าง web app ที่โหลดข้อมูลจาก backend ได้โดยไม่รีเฟรช
+
+[8] สิ่งที่อยากพัฒนาเพิ่มเติม (Next Steps)
+
+เพิ่มระบบ Add/Edit/Delete quote ด้วย API
+
+แสดง loader ระหว่างรอ fetch เสร็จ
+
+เพิ่มระบบแจ้งเตือนเมื่อเกิด error
+
+ปรับให้รองรับการค้นหาคำคม (filter quote list)

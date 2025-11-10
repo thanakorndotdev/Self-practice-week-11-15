@@ -1,0 +1,88 @@
+Progression : Asynchronous JavaScript (Promise & Async/Await)
+วันที่: 4 Nov 2025
+ไฟล์: async_practice.js
+หัวข้อ: การจัดการงานแบบไม่พร้อมกัน (Asynchronous) ด้วย Promise และ Async/Await
+
+[0] สรุปภาพรวม (What I built)
+สร้างระบบจำลองการทำงานที่ใช้เวลา ด้วย Promise
+มีฟังก์ชัน doSomething() จำลองสถานะงานที่ “สำเร็จ” หรือ “ล้มเหลว”
+ทดลองใช้ 2 วิธีในการจัดการผลลัพธ์
+(1) .then().catch()
+(2) async/await พร้อม try...catch
+
+[1] โครงสร้างและขอบเขตความรับผิดชอบ (Separation of Concerns)
+
+doSomething() → สร้าง Promise และจำลองการทำงานแบบ async
+
+working1() → ใช้ .then().catch()
+
+working2() → ใช้ async/await เพื่อให้โค้ดอ่านง่ายขึ้น
+
+แยกส่วน logic และการแสดงผลให้เข้าใจง่าย
+
+[2] แนวคิดการออกแบบ (Design Concepts)
+
+ใช้ setTimeout() จำลองงานที่ใช้เวลาประมวลผล 5 วินาที
+
+แสดงตัวอย่างการรอผลลัพธ์ (resolve / reject) ของ Promise
+
+สาธิตความแตกต่างของ .then() กับ await
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+ใช้ new Promise((resolve, reject) => {...})
+
+ใช้ resolve() เพื่อส่งค่ากลับเมื่อสำเร็จ
+
+ใช้ reject() เพื่อส่ง error เมื่อเกิดข้อผิดพลาด
+
+ใช้ await เพื่อรอ Promise ให้เสร็จก่อนดำเนินโค้ดถัดไป
+
+ใช้ try...catch เพื่อจัดการ error ใน async function
+
+[4] ประสบการณ์ที่ได้เรียนรู้
+
+await ทำให้โค้ดดูเป็นลำดับ อ่านง่าย
+
+ต้องใช้ await ภายในฟังก์ชันที่ประกาศเป็น async เท่านั้น
+
+รู้จักสถานะของ Promise (pending / fulfilled / rejected)
+
+การจัดการ error สำคัญมากเพื่อป้องกันโปรแกรมหยุดทำงาน
+
+[5] แนวคิดเรื่องสถานะ (State Awareness)
+
+Promise เริ่มที่สถานะ pending
+
+ถ้า resolve() → สถานะเปลี่ยนเป็น fulfilled
+
+ถ้า reject() → สถานะเปลี่ยนเป็น rejected
+
+await คือการรอจน Promise เปลี่ยนสถานะแล้วนำค่ามาใช้
+
+[6] ข้อดี–ข้อเสียที่ตระหนักได้
+ข้อดี:
+โค้ดอ่านง่ายกว่าการซ้อน callback
+ใช้ try...catch เหมือนโค้ด synchronous ได้
+เหมาะกับการเรียก API หรือการโหลดข้อมูล
+
+ข้อเสีย:
+ใช้ได้เฉพาะใน async function
+ถ้าใช้ await หลายจุดติดกัน อาจทำให้การทำงานช้าลง
+ถ้าลืม catch error อาจทำให้โปรแกรมหยุดทำงาน
+
+[7] สิ่งที่ได้จากบทเรียนนี้ (Key Takeaways)
+
+เข้าใจโครงสร้าง Promise และ async-await
+
+แยก flow ของโค้ดที่ต้องรอผลลัพธ์ได้ชัดเจน
+
+จัดการ error ได้อย่างเป็นระบบ
+
+[8] สิ่งที่อยากพัฒนาเพิ่มเติม (Next Steps)
+
+ทดลองใช้ Promise.all() เพื่อรันหลายงานพร้อมกัน
+
+เขียน async function ที่ซ้อนกันหลายชั้น
+
+เพิ่มระบบ loader แสดงสถานะระหว่างรอ Promise

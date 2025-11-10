@@ -1,0 +1,127 @@
+Progression25 : Asynchronous JavaScript (Async / Await & Promise Handling)
+
+วันที่: 4–6 Nov 2025
+ไฟล์ที่เกี่ยวข้อง: async_practice.js, quoteManagement.js, fetchUtils.js, app.js, index.html
+หัวข้อ: การฝึกฝนการทำงานแบบอะซิงโครนัส (Asynchronous) และการนำไปประยุกต์ใช้ในโปรเจกต์ Quote Manager
+
+[0] ภาพรวมของสิ่งที่สร้าง (Overview)
+
+ในสัปดาห์นี้ได้ฝึกและพัฒนา 2 ส่วนหลักที่ต่อเนื่องกัน ได้แก่
+
+การจำลองการทำงานแบบอะซิงโครนัส (async_practice.js)
+
+สร้างฟังก์ชัน doSomething() จำลองงานที่ใช้เวลา 5 วินาที
+
+ทดสอบการทำงานของ Promise ผ่านสองรูปแบบคือ
+
+.then().catch() (รูปแบบดั้งเดิม)
+
+async/await (รูปแบบอ่านง่ายและเป็นลำดับ)
+
+โปรเจกต์ Quote Manager (fetchUtils.js + quoteManagement.js + app.js + index.html)
+
+พัฒนาเว็บแอปที่โหลดคำคมจาก API ด้วย fetch() และ async/await
+
+แยกการทำงานของโปรแกรมเป็นโมดูล (Fetch, Logic, UI, HTML) อย่างชัดเจน
+
+แสดงข้อมูล quote ในรูปแบบการ์ดพร้อมปุ่ม Edit / Delete
+
+โครงสร้างระบบโดยรวม:
+
+async_practice.js        → ฝึกใช้ Promise / async-await เบื้องต้น
+fetchUtils.js            → จัดการการดึงข้อมูลจาก API (getItems)
+quoteManagement.js       → โหลด quotes ด้วย async/await
+app.js                   → สร้างและแสดง DOM quote card
+index.html               → หน้าเว็บหลักและฟอร์มรับข้อมูล
+
+[1] สิ่งที่ได้ฝึกฝนและเข้าใจ (Core Learning)
+Promise & Async/Await
+
+เข้าใจการทำงานของ Promise และสถานะ (pending, fulfilled, rejected)
+
+ฝึกใช้ async/await เพื่อรอผลลัพธ์โดยไม่บล็อก thread หลัก
+
+ใช้ try...catch จัดการข้อผิดพลาดและป้องกันหน้าเว็บค้าง
+
+สังเกตความต่างของ .then().catch() (อ่านยาก) กับ async/await (อ่านเหมือนโค้ด synchronous)
+
+Fetch API & Modular JS
+
+ใช้ fetch() ดึงข้อมูลแบบ asynchronous และ parse JSON ก่อนใช้งาน
+
+แยกโค้ดเป็นโมดูล:
+
+fetchUtils.js → ส่วนกลางสำหรับดึงข้อมูล
+
+quoteManagement.js → ประมวลผลและควบคุม logic
+
+app.js → แสดงผลบนหน้า HTML
+
+ใช้ ES Module (import/export) เพื่อเชื่อมโยงไฟล์และลดความซ้ำซ้อนของโค้ด
+
+[2] แนวคิดเชิงออกแบบ (Design Principles)
+
+Separation of Concerns
+→ แยกหน้าที่ของโค้ดแต่ละไฟล์ออกจากกันชัดเจน: Fetch (ดึงข้อมูล), Logic (จัดการข้อมูล), UI (แสดงผล)
+
+Asynchronous Flow
+→ ใช้ async/await เพื่อควบคุมลำดับการทำงานที่รอผลลัพธ์ โดยไม่ทำให้หน้าเว็บค้าง
+
+Reusable Utilities
+→ ออกแบบ getItems(url) ให้ใช้ซ้ำในหลายโมดูลได้ในอนาคต
+
+Error Handling & Stability
+→ ทุกฟังก์ชัน async มี try...catch เพื่อจัดการ error gracefully และแจ้งผู้ใช้เมื่อเกิดปัญหา
+
+Dynamic DOM Rendering
+→ ใช้ document.createElement() สร้าง DOM card ของ quote แต่ละรายการ พร้อมปุ่ม Edit/Delete
+
+[3] ปัญหาที่พบและแนวทางแก้ (Challenges & Solutions)
+ปัญหา	แนวทางแก้
+Promise reject แล้วเว็บไม่ตอบสนอง	ครอบด้วย try...catch และแสดง alert(e)
+fetch ไม่ได้เพราะ URL ผิดหรือ CORS	ตรวจสอบ base URL ผ่าน import.meta.env.VITE_APP_URL
+DOM ซ้ำซ้อนตอน render	เคลียร์ innerHTML ก่อน appendChild()
+API ตอบกลับช้า	เพิ่ม log “Loading...” หรือใช้ loader บอกสถานะระหว่าง fetch
+[4] สิ่งที่ได้เรียนรู้เชิงเทคนิค (Technical Insights)
+
+fetch() เป็น asynchronous I/O → ทำงานนอก main thread ทำให้ UI ไม่ค้าง
+
+await ไม่บล็อกทั้งระบบ แต่จะบล็อกเฉพาะภายใน async function เท่านั้น
+
+Error ต้องโยนกลับ (throw) ใน Promise เพื่อให้ฟังก์ชันที่ await สามารถจับได้
+
+การแยกโมดูลด้วย import/export ช่วยให้โปรเจกต์ scale ได้ง่าย
+
+dataset.id ช่วยให้ผูกข้อมูลกับ element ได้โดยไม่ต้องใช้ global variable
+
+[5] สิ่งที่ตระหนักและพัฒนาได้ (Reflection & Takeaways)
+
+การใช้ async/await ทำให้โค้ด “อ่านเหมือน synchronous” แต่ทำงานเร็วและปลอดภัยกว่า
+
+เข้าใจการเชื่อมโยงระหว่าง Frontend ↔ API ด้วย fetch()
+
+การจัดโครงสร้างโปรเจกต์ให้แยก Data / Logic / UI ช่วยลดความซับซ้อน
+
+เห็นภาพว่าการดึงข้อมูลแบบไม่รีเฟรชหน้า คือพื้นฐานของ SPA (Single Page Application)
+
+[6] สิ่งที่อยากต่อยอด (Next Steps)
+
+พัฒนาให้ Quote Manager รองรับ CRUD เต็มรูปแบบ (Add/Edit/Delete ผ่าน API)
+
+เพิ่มระบบ loading indicator ขณะ fetch
+
+สร้าง error banner เมื่อเกิด network error
+
+ทำ search/filter bar เพื่อค้นหาคำคมเฉพาะ
+
+ทดลองใช้ Promise.all() เพื่อโหลดหลาย API พร้อมกัน
+
+[7] บทสรุป (Final Reflection)
+
+จากบทเรียนนี้ ได้ฝึกทั้งการคิดเชิงอะซิงโครนัสและการประยุกต์ใช้จริงกับ Fetch API
+เข้าใจลึกถึงการทำงานของ Promise, async/await และการแยกโมดูลแบบมืออาชีพ
+
+ตอนนี้เว็บที่สร้างสามารถ
+ดึงข้อมูลจาก API
+แสดงผลแบบ dynamic
+จัดการ error ได้อย่างปลอดภัย
