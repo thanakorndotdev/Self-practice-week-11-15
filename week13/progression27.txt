@@ -1,0 +1,107 @@
+Progression : Asynchronous JavaScript (Async/Await + Parallel Execution)
+วันที่: 14 Nov 2025
+ไฟล์: async_parallel.js
+หัวข้อ: การรันงานหลายงานพร้อมกันด้วย Promise.all & Async/Await
+[0] สรุปภาพรวม (What I built)
+
+สร้างฟังก์ชัน async 3 ตัว ที่ทำงานต่างกันและใช้เวลาต่างกัน
+
+ทดสอบรันแบบ:
+
+รอทีละงาน (sequential)
+
+รันพร้อมกันด้วย Promise.all
+
+วัดเวลา execution -> ชัดเจนว่าการรันแบบ parallel เร็วกว่ามาก
+
+สร้าง error case เพื่อดูผลกระทบของ Promise.all
+
+[1] โครงสร้างและขอบเขตความรับผิดชอบ (Separation of Concerns)
+1. asyncTask(name, time, isError)
+จำลอง task ที่ใช้เวลา
+return Promise
+
+2. runSequential()
+
+รันแบบทีละงาน (await 3 ครั้ง)
+ใช้เวลา = ผลรวมของทุกงาน
+
+3. runParallel()
+
+ใช้ Promise.all
+ใช้เวลา = งานที่ช้าที่สุดเพียงงานเดียว
+
+4. runParallelWithError()
+
+ทดสอบ error ใน Promise.all -> ทำให้ทั้งชุด fail ทันที
+
+[2] แนวคิดการออกแบบ (Design Concepts)
+
+แสดงภาพชัดเจนว่าระบบ async สามารถ optimize performance ได้
+
+เปรียบเทียบ sequential vs parallel execution
+
+ฝึกใช้ async/await ร่วมกับ Promise.all
+
+ทดลองสถานการณ์ error จริง เพื่อเข้าใจ behavior
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+รู้จัก parallel execution ของ Promise
+
+ใช้ Promise.all() เพื่อทำงานพร้อมกัน
+
+ใช้ Date.now() วัด performance
+
+ใช้ try...catch ครอบ Promise.all เพื่อจับ error
+
+[4] ประสบการณ์ที่ได้เรียนรู้
+
+async/await ไม่ได้หมายความว่าทุกงานต้อง “รอทีละอัน”
+
+ถ้าออกแบบดี จะลดเวลาทำงานจาก 9 วิ -> 3 วิได้
+
+Promise.all ถือว่า fail ทั้งชุดถ้างานใดงานหนึ่ง error
+
+ต้องระวังให้ดีเวลาใช้งานในระบบจริง เช่น โหลด API หลายตัวพร้อมกัน
+
+[5] แนวคิดเรื่องสถานะ (State Awareness)
+
+เมื่อใช้ Promise.all:
+
+ถ้าทุกงาน fulfilled -> ได้ผลลัพธ์เป็น array
+
+ถ้ามีงานเดียว reject -> ทั้งชุด reject
+
+ทำให้เห็นความสำคัญของการตรวจ error ก่อนรวมงาน
+
+[6] ข้อดี–ข้อเสียที่ตระหนักได้
+✔ ข้อดี
+
+เร็วขึ้นมากเมื่อสามารถรันงานพร้อมกัน
+
+ใช้โค้ดน้อยกว่า sequential
+
+กลับมาจัดการด้วย async/await ทำให้โค้ดอ่านง่าย
+
+✘ ข้อเสีย
+
+หากงานเพียงงานเดียว fail → ทั้งชุดพัง
+
+ไม่เหมาะกับงานที่ต้องการ partial result
+
+[7] Key Takeaways
+
+Promise.all คือเครื่องมือที่ทรงพลังมากเวลาต้องรันหลาย async task
+
+async/await + Promise.all = โค้ดอ่านง่าย + performance ดี
+
+เข้าใจ behavior ตอนเกิด error ช่วยเขียนระบบแข็งแรงขึ้น
+
+[8] Next Steps
+
+ทดลองใช้ Promise.allSettled() เพื่อรับผลลัพธ์แม้บางงานจะ fail
+
+สร้างระบบโหลดข้อมูล API 3 ตัวพร้อมกัน
+
+สร้าง UI แสดงผลการรอแบบ loader

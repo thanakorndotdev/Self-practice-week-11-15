@@ -1,0 +1,184 @@
+Progression26-27 : Frontend Development – Asynchronous JavaScript & Quote Manager
+
+วันที่: 14–16 Nov 2025
+ไฟล์ที่เกี่ยวข้อง: index.html, app.js, quoteManagement.js, fetchUtils.js
+หัวข้อ: การจัดการระบบแบบอะซิงโครนัส (Asynchronous) และการพัฒนา CRUD ด้วย Fetch API
+
+[0] ภาพรวมของสิ่งที่สร้าง (Overview)
+
+ในรอบนี้ได้ฝึกพัฒนา เว็บแอปสำหรับจัดการคำคม (Quote Manager)
+และทบทวนการทำงานแบบ Asynchronous ผ่านการฝึกกับ Fetch API + Promise + Async/Await
+
+ประกอบด้วย 2 ส่วนหลัก:
+
+1 การฝึก Asynchronous JavaScript (Promise / Async-Await)
+
+ใช้ fetch() ร่วมกับ async/await เพื่อโหลดข้อมูลจาก API แบบไม่บล็อกการทำงานของหน้าเว็บ
+
+ตีโจทย์เรื่องลำดับการประมวลผลที่ต้องรอผลลัพธ์ก่อนถึงจะดำเนินต่อได้
+
+ฝึกจับ error เช่น fetch ไม่พบ URL, network ล่ม หรือ API ส่ง error กลับมา
+
+2 โปรเจกต์ Quote Manager
+
+เป็นเว็บแอปที่สามารถ:
+
+ดึงคำคมจาก API
+แสดงในรูปแบบการ์ด
+กดแก้ไข (Edit) ได้
+กดลบ (Delete) ได้
+กรอกแบบฟอร์มเพิ่มข้อมูลใหม่ได้
+
+โดยแยกเป็นโมดูล:
+
+ไฟล์	                        หน้าที่
+fetchUtils.js	        Utility สำหรับทำงานร่วมกับ Fetch API
+quoteManagement.js	    Logic สำหรับโหลด / สร้าง / อัปเดต / ลบ quotes
+app.js	                จัดการ DOM, event handler, UI
+index.html	            หน้าเว็บหลัก มี form และพื้นที่แสดงผล
+
+โครงสร้างนี้ช่วยให้ระบบ ชัดเจน / แก้ง่าย / ขยายได้ เหมือนแนวที่อาจารย์สอนในคลาส CRUD
+
+1 สิ่งที่ได้ฝึกฝนและเข้าใจ (Core Learning)
+Promise & Async/Await
+
+เข้าใจวงจรชีวิตของ Promise -> pending -> fulfilled/rejected
+
+ใช้ await เพื่อรอผลลัพธ์แบบไม่บล็อก UI
+
+ใช้ try...catch เพื่อป้องกัน error จาก fetch ทำให้เว็บไม่ค้าง
+
+เห็นความต่างระหว่าง
+.then().catch() (ดูเป็นชั้น ๆ)
+async/await (อ่านเหมือนโค้ดปกติ)
+
+Fetch API
+
+ใช้ fetch(url) เพื่อโหลดข้อมูลจาก backend
+
+ใช้ .json() เพื่อแปลงข้อมูลก่อนนำไปแสดง
+
+ส่ง method ต่าง ๆ:
+
+GET -> โหลดข้อมูล
+
+POST -> สร้างข้อมูล
+
+PUT -> อัปเดต
+
+DELETE -> ลบ
+
+Modular JavaScript
+
+แยกหน้าที่เป็นไฟล์ เช่น fetch / logic / UI
+
+ใช้ export และ import ตามมาตรฐาน ES Modules
+
+ลด global scope ทำให้โค้ดปลอดภัยขึ้น
+
+2 แนวคิดเชิงออกแบบ (Design Principles)
+Separation of Concerns
+
+แต่ละไฟล์มีหน้าที่ชัดเจน:
+
+fetchUtils.js -> การสื่อสารกับ API
+
+quoteManagement.js -> business logic
+
+app.js -> DOM และการแสดงผล
+
+index.html -> หน้า UI ที่เบาที่สุด
+
+Asynchronous Flow
+
+รอข้อมูลจาก API ก่อน render
+
+ใช้ await แทน callback เพื่อความอ่านง่าย
+
+ใช้ async function ทุกจุดที่ fetch ข้อมูล
+
+Reusable Functions
+
+เช่น getItems(url) ถูกใช้ซ้ำในทุกโมดูลที่ต้องโหลดข้อมูล
+
+Error Handling
+
+ครอบ fetch ด้วย try...catch
+
+แจ้งผู้ใช้ด้วย alert หรือ UI message
+
+ทำให้ระบบปลอดภัยแม้ API ตอบกลับผิดปกติ
+
+Dynamic DOM
+
+ใช้ createElement() สร้างการ์ด quote แบบ real-time
+
+ใช้ dataset.id เพื่อผูกข้อมูลกับปุ่ม Edit/Delete
+
+ไม่ใช้ global variable -> ปลอดภัยกว่า
+
+3 ปัญหาที่พบและแนวทางแก้ (Challenges & Solutions)
+ปัญหา	สาเหตุ	วิธีแก้
+fetch ไม่ผ่าน	URL / CORS	ตรวจ baseURL จาก env
+render ซ้ำซ้อน	ไม่เคลียร์ DOM เก่า	ใช้ innerHTML = "" ก่อน render
+error ไม่กระจายถึง UI	Promise ไม่ throw	เพิ่ม throw new Error()
+Edit แล้ว form ไม่ล้างค่า	ไม่มี reset	ใช้ form.reset() + เคลียร์ id
+
+4 สิ่งที่ได้เรียนรู้เชิงเทคนิค (Technical Insights)
+
+await จะรอเฉพาะใน async function แต่ไม่ทำให้ UI ค้าง
+
+throw ใน Promise เป็นวิธีเดียวที่ทำให้ error ไปถึง catch ของ async/await
+
+fetch เป็น non-blocking I/O -> ทำงานเบื้องหลัง
+
+การใช้ dataset ช่วยผูกข้อมูลกับ element ได้ง่ายโดยไม่ใช้ global state
+
+โครงสร้างแบบแยกไฟล์ทำให้ระบบ scale ได้ดีขึ้นมาก
+
+5 สิ่งที่ตระหนักและพัฒนาได้ (Reflection & Takeaways)
+
+async/await คือสิ่งที่ทำให้ frontend ใช้งาน API ได้ง่ายและปลอดภัย
+
+ควรแยกโค้ดเป็น Data / Logic / UI ตามหลัก MVC-like
+
+DOM manipulation มีผลมากกับ performance — ควร render แบบ batch
+
+การรีเซ็ต form หลัง Edit เป็น UX ที่สำคัญมาก
+
+การเขียนอย่างเป็นระบบทำให้งาน sprint ถัดไปง่ายขึ้นเยอะ
+
+6 สิ่งที่อยากต่อยอด (Next Steps)
+
+ต่อระบบ Quote Manager ให้เป็น CRUD สมบูรณ์ 100%
+
+เพิ่ม loading indicator ระหว่าง fetch
+
+เพิ่มระบบ filter / search
+
+ใช้ Promise.all() เพื่อโหลดหลายข้อมูลพร้อมกัน เช่น quote + user + setting
+
+ปรับ UI ให้ตอบสนองดีขึ้น เช่นแสดง “Saving…” ระหว่างส่งข้อมูล
+
+ใช้ session/local storage เก็บค่าชั่วคราว
+
+7 บทสรุป (Final Reflection)
+
+จากงานรอบนี้ได้เข้าใจอย่างลึกซึ้งเกี่ยวกับ:
+
+การจัดการงานแบบอะซิงโครนัส
+
+การคุมลำดับการทำงานด้วย async/await
+
+การใช้ fetch API กับ backend
+
+การแยกโครงสร้างโปรเจกต์เป็นโมดูลแบบมืออาชีพ
+
+Quote Manager ที่สร้างขึ้นสามารถ:
+
+โหลดคำคมแบบไม่ต้องรีเฟรชหน้า
+แสดงผลแบบ dynamic
+รองรับแก้ไขและลบข้อมูล
+จัดการ error อย่างป้องกันได้
+
+ถือเป็นการวางรากฐานสำคัญของการพัฒนาเว็บแบบ SPA และการทำงานร่วมกับ API ใน sprint ต่อ ๆ ไปอย่างมั่นคง

@@ -1,0 +1,107 @@
+Progression 26 : Asynchronous JavaScript (Callback -> Promise -> Async/Await)
+วันที่: 12 Nov 2025
+ไฟล์: async_callback_to_promise.js
+หัวข้อ: พัฒนาการจาก Callback Hell ไปสู่ Promise
+[0] สรุปภาพรวม (What I built)
+
+สร้างระบบจำลองงาน 3 ขั้นตอนที่ต้องรันตามลำดับ
+
+ทดลองเขียนแบบ callback -> พบปัญหาความซ้อน (Callback Hell)
+
+แปลงเป็น Promise แต่ละ step พร้อม chain ด้วย .then()
+
+เห็นภาพชัดเจนว่า Promise แก้ปัญหา callback hell ได้อย่างไร
+
+[1] โครงสร้างและขอบเขตความรับผิดชอบ (Separation of Concerns)
+1. doStep(name, time, isError)
+
+ฟังก์ชันจำลองงาน 1 step
+มีเวลา delay และสามารถกำหนดให้ error ได้
+return เป็น Promise
+
+2. runWithCallback()
+
+เขียนแบบ callback ซ้อน 3 ชั้น
+ใช้เพื่อแสดงจุดอ่อนของ callback hell
+
+3. runWithPromise()
+
+ใช้ Promise + .then() รันงานทีละ step
+ลื่นไหลกว่า callback และอ่านง่ายกว่า
+
+[2] แนวคิดการออกแบบ (Design Concepts)
+
+ต้องการให้เห็นความแตกต่างใน readability
+
+callback hell -> nesting ลึก / ยากต่อ maintenance
+
+Promise -> แยก logic คนละ block, ลำดับดูชัดเจน
+
+ออกแบบให้ step ล้มเหลวได้เพื่อทดสอบ error handling
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+ใช้ setTimeout() จำลองงาน async
+
+ใช้ callback เพื่อแสดง structure แบบ nested
+
+ใช้ Promise ในรูปแบบ
+
+new Promise((resolve, reject) => {...})
+
+ใช้ .then() เชื่อมหลาย step
+
+ใช้ .catch() handle error รวม
+
+[4] ประสบการณ์ที่ได้เรียนรู้
+
+Callback hell ทำให้โค้ดอ่านยากมาก
+
+Promise ลดปัญหาการ nested เป็นอย่างดี
+
+.catch() ตัวเดียว handle error ได้ทั้ง chain
+
+developer ควรหลีกเลี่ยง callback hell ใน production
+
+[5] แนวคิดเรื่องสถานะ (State Awareness)
+
+callback ไม่ได้มีสถานะชัดเจน เหมือนฟังก์ชันปกติ
+
+Promise มีสถานะช่วย debug:
+
+pending -> เริ่มรอ
+
+fulfilled -> สำเร็จ
+
+rejected -> ล้มเหลว
+
+[6] ข้อดี–ข้อเสียที่ตระหนักได้
+ข้อดีของ Promise
+
+chain step ได้เป็นระเบียบ
+
+.catch() รวม error ง่าย
+
+ใช้ร่วมกับ async/await ได้
+
+ข้อเสีย
+
+.then().then().then() ยาว ๆ ก็อาจอ่านยากอีก
+
+ต้องจัดรูปแบบดี ๆ ไม่งั้นกลายเป็น “Promise Hell” ได้เหมือนกัน
+
+[7] Key Takeaways
+
+Promise คือ “Callback ที่จัดระเบียบแล้ว”
+
+อ่านง่ายกว่า และเหมาะกับงานหลาย step
+
+ช่วยให้ migration ไป async/await ง่ายมาก
+
+[8] Next Steps
+
+นำ Promise มาผสม async/await
+
+ทดลองใช้ Promise.all()
+
+แปลง code ที่มี callback เยอะ ๆ ไปเป็น Promise
