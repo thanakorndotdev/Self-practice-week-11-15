@@ -1,0 +1,162 @@
+Progression28 : Custom Dialog System – JavaScript DOM & Callback Interaction
+
+วันที่: 21 Nov 2025
+โฟลเดอร์: week14/21nov25
+หัวข้อ: การสร้าง Dialog UI แบบกำหนดเองด้วย JavaScript (Reusable Dialog Component)
+
+[0] สรุปภาพรวมของงาน (Overview)
+
+ในงานนี้ได้พัฒนา Custom Dialog System ด้วย JavaScript ล้วน เพื่อใช้เป็น component 
+กลางของเว็บสำหรับการแสดงข้อความแจ้งเตือนและกล่องยืนยันการทำรายการ
+
+ระบบนี้รองรับการกำหนด title, message, ปุ่ม OK และ Cancel รวมถึง callback function 
+ที่เรียกเมื่อกดแต่ละปุ่ม โดยมีการสร้าง DOM element ทั้งหมดแบบ dynamic และสามารถ reuse ได้ในโปรเจกต์ต่อไป
+
+มีปุ่มทดสอบ 2 แบบในหน้าเว็บ ได้แก่ Confirm Dialog และ Info Dialog ซึ่งใช้ฟังก์ชันเดียวกันในการสร้าง
+
+[1] โครงสร้างและหน้าที่ของแต่ละส่วน (Module Structure)
+
+showDialog(options)
+
+เป็นฟังก์ชันหลักรับ config ผ่าน object เช่น title, message, okText, cancelText, onOk, onCancel
+หน้าที่ของฟังก์ชันคือ
+
+ลบ dialog เก่าก่อนสร้างใหม่
+
+สร้าง overlay, dialog, title, message และปุ่ม
+
+กำหนด event handler ให้ปุ่มต่างๆ
+
+ปิด dialog ก่อนเรียก callback เพื่อป้องกัน state ค้าง
+
+Event Handler: ปุ่ม Confirm
+ผูกกับปุ่ม btn-open-confirm
+แสดง dialog ที่มีสองปุ่ม OK และ Cancel
+เรียก callback onOk หรือ onCancel ตามการกด
+
+Event Handler: ปุ่ม Info
+แสดง dialog แบบปุ่มเดียว
+กรณี cancelText เป็นค่าว่าง จะไม่สร้างปุ่ม Cancel
+
+DOM Flow
+ลำดับการสร้าง element คือ overlay, dialog, title, message, action buttons
+สร้างด้วย createElement ทั้งหมด ไม่ใช้ innerHTML ยกเว้นเนื้อข้อความ
+
+[2] แนวคิดเชิงออกแบบ (Design Principles)
+
+Separation of Concerns
+
+showDialog จัดการเฉพาะ UI component
+
+Event listeners จัดการเหตุการณ์จากผู้ใช้
+
+CSS แยกหน้าที่เรื่องการแสดงผล
+
+Reusable Component
+
+ใช้ dialog component เดียวในทุกหน้า
+
+ปรับแต่งได้จาก parameter
+
+Callback Pattern
+
+สามารถกำหนดฟังก์ชันที่ทำงานหลังการกดปุ่มได้
+
+ทำให้ dialog ไม่ผูกกับ logic จากหน้าอื่น
+
+Dynamic Rendering
+
+สร้าง DOM ระหว่าง runtime ทำให้ควบคุมโครงสร้างได้ละเอียด
+
+[3] สิ่งที่ได้ฝึกและเข้าใจ (Core Learning)
+
+DOM API
+
+การใช้ createElement, appendChild, classList
+
+การลบ element ด้วย remove
+
+ควบคุม UI แบบไม่พึ่ง HTML template
+
+Event Handling
+
+การกำหนด event runtime ให้ปุ่ม
+
+ปิด dialog ก่อนเรียก callback เพื่อป้องกัน overlay ซ้อน
+
+Object Destructuring
+
+รับค่า config ผ่าน object เพื่อลดความซับซ้อนของ parameter
+
+Conditional Rendering
+
+แสดงหรือไม่แสดงปุ่ม Cancel ตามค่า cancelText
+
+[4] ปัญหาที่พบและแนวทางแก้ (Challenges & Solutions)
+
+overlay ซ้อน
+
+สาเหตุ: ไม่ลบ dialog เดิม
+
+วิธีแก้: remove ก่อนสร้างใหม่
+
+ปุ่ม Cancel แสดงทั้งที่ไม่ต้องการ
+
+สาเหตุ: render คงที่
+
+วิธีแก้: ตรวจ cancelText ก่อนสร้างปุ่ม
+
+callback ทำงานก่อน UI ปิด
+
+สาเหตุ: เรียก callback ก่อน remove
+
+วิธีแก้: ปิด dialog แล้วค่อยเรียก callback
+
+ลำดับ DOM เพี้ยน ส่งผลให้ layout ผิด
+
+แก้ไขโดยจัดเรียงการ appendChild ใหม่ให้เป็น hierarchical structure ที่ถูกต้อง
+
+[5] สิ่งที่ได้เรียนรู้เชิงเทคนิค (Technical Insights)
+
+DOM API ให้การควบคุม component ได้ละเอียดกว่า innerHTML
+
+callback-based design แยก UI ออกจาก logic ได้ดี
+
+remove dialog เก่าเป็นเรื่องจำเป็นเพื่อป้องกัน overlay ทับ
+
+dialog ชุดนี้สามารถขยายไปเป็นระบบ Promise-based ได้ง่าย
+
+[6] สิ่งที่ตระหนักและพัฒนาได้ (Reflection & Takeaways)
+
+การออกแบบ component ควรแยก logic, UI, และ event handler อย่างชัดเจน
+
+การสร้าง UI แบบ dynamic ต้องระวังโครงสร้าง DOM ไม่ให้ผิดลำดับ
+
+UX ที่ดีควรปิด dialog เสมอหลังการกดปุ่มใดๆ
+
+component แบบนี้ช่วยรองรับงาน CRUD อย่างยืนยันการลบหรือแจ้งผลลัพธ์ได้ดีมาก
+
+โครงสร้างที่ทำไว้สามารถต่อยอดงานสปรินต์ถัดไปได้ง่าย
+
+[7] สิ่งที่อยากพัฒนาเพิ่ม (Next Steps)
+
+เพิ่มการปิดด้วยปุ่ม ESC
+
+เพิ่มปิดด้วยการคลิกพื้นหลัง
+
+เพิ่ม animation ตอนเปิดและปิด
+
+แยกเป็น module dialog.js พร้อม export
+
+เพิ่ม dialog แบบ success, warning, error
+
+ทำเวอร์ชัน Promise-based เช่น
+const result = await showConfirmDialog("Delete?")
+
+[8] บทสรุป (Final Reflection)
+
+งานนี้ช่วยให้เข้าใจการสร้าง UI แบบ dynamic ด้วย DOM API อย่างเต็มรูปแบบ ทั้งการควบคุม element การจัด callback 
+และการจัดการ state ของการเปิดปิด dialog
+
+ผลลัพธ์คือ Custom Dialog System ที่ยืดหยุ่น ใช้ซ้ำได้ กำหนดพฤติกรรมผ่าน callback ได้อย่างเป็นอิสระกว่าการใช้ alert หรือ confirm 
+และพร้อมสำหรับนำไปประยุกต์กับงานที่ซับซ้อนขึ้นในสปรินต์ถัดไป

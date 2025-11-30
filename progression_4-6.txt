@@ -1,4 +1,4 @@
-Progression25 : Asynchronous JavaScript (Async / Await & Promise Handling)
+Progression24-25 : Asynchronous JavaScript (Async / Await & Promise Handling)
 
 วันที่: 4–6 Nov 2025
 ไฟล์ที่เกี่ยวข้อง: async_practice.js, quoteManagement.js, fetchUtils.js, app.js, index.html

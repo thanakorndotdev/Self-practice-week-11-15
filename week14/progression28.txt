@@ -1,0 +1,186 @@
+Progression Summary: Custom Dialog System (JavaScript DOM + Event Callbacks)
+
+Date: 15 Nov 2025
+Folder: 21nov25
+Topic: การสร้าง Dialog UI ด้วย JavaScript (Reusable Dialog, DOM API, Callback-based Interaction)
+
+[0] สรุปภาพรวมของงาน (What I Built)
+
+ในงานนี้ได้พัฒนา Custom Dialog System ด้วย JavaScript ล้วน ๆ (no library) เพื่อแสดงผลข้อความ,
+ยืนยันการทำรายการ (confirm), และแจ้งเตือน (info) โดยใช้ DOM API สร้าง elements แบบ dynamic ทั้งหมด
+
+ฟังก์ชันหลักคือ showDialog() รองรับ:
+
+การกำหนด title, message, ปุ่ม OK / Cancel
+
+callback functions สำหรับกด OK หรือ Cancel
+
+การสร้าง overlay + dialog box ด้วย DOM แบบ runtime
+
+รองรับ dialog แบบ confirm และ dialog แบบ info (ปุ่มเดียว)
+
+การทำงานถูกทดสอบผ่านปุ่มสองตัวในหน้าเว็บ:
+
+ปุ่มยืนยันการลบ (Confirm Dialog)
+
+ปุ่มแจ้งเตือน (Information Dialog)
+
+ระบบ dialog ถูกออกแบบให้ สร้างง่าย ใช้ซ้ำได้ และควบคุม behavior ผ่าน callback ได้อย่างยืดหยุ่น
+
+[1] โครงสร้างและหน้าที่ของแต่ละส่วน (Separation of Concerns)
+1. showDialog({ ...options })
+
+ฟังก์ชันหลักที่สร้าง dialog UI
+
+รับค่า config ผ่าน object destructuring เช่น:
+
+title
+
+message
+
+okText
+
+cancelText
+
+onOk
+
+onCancel
+
+ลบ dialog เก่า (ป้องกัน overlay ซ้อน)
+
+สร้าง overlay + dialog box + message + buttons
+
+กำหนด event ให้ปุ่ม OK / Cancel
+
+จัดการปิด dialog หลังการกดปุ่ม
+
+2. Event Handler: Confirm Button
+
+ผูก event กับปุ่ม "btn-open-confirm"
+
+เปิด dialog แบบ confirm มี 2 ปุ่ม
+
+onOk ใช้ console.log + alert (ตัวอย่าง behavior)
+
+onCancel log ว่ายกเลิก
+
+3. Event Handler: Info Button
+
+ผูก event กับปุ่ม "btn-open-info"
+
+สร้าง dialog แบบมีปุ่มเดียว (OK เท่านั้น)
+
+cancelText = "" → ไม่มีปุ่ม Cancel
+
+onOk log ว่ากดปุ่ม OK
+
+4. UI/DOM Creation Flow
+
+overlay → dialog → title → message → actions → buttons
+ทั้งหมดสร้างด้วย document.createElement() เพื่อความปลอดภัยและยืดหยุ่น
+
+[2] แนวคิดในการออกแบบ (Design Concepts)
+
+Reusable UI Component: สร้าง dialog แบบกลางใช้ได้ทุกหน้า
+
+Dynamic UI: ใช้ DOM API ไม่พึ่ง HTML template
+
+Callback Design Pattern: ผู้ใช้ dialog สามารถกำหนด behavior ได้
+
+Conditional UI Rendering: cancelText="" → ซ่อนปุ่ม Cancel
+
+Single Responsibility Principle:
+
+showDialog = UI + interaction ของ dialog
+
+Event listeners = ส่วนที่เรียกใช้ dialog
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+DOM creation (createElement, appendChild)
+
+Event handling (onclick)
+
+Object destructuring parameters
+
+Optional callback execution (typeof onOk === "function")
+
+ลบ element ด้วย .remove()
+
+UI overlay เพื่อ block interaction หลังฉาก
+
+การซ่อนปุ่ม Cancel แบบ dynamic
+
+[4] สิ่งที่ได้เรียนรู้ (What I Learned)
+
+การสร้าง UI ที่ยืดหยุ่นต้องแยก logic + presentation
+
+ปุ่ม Cancel ควรแสดงเฉพาะเมื่อจำเป็น (ตาม cancelText)
+
+Callback pattern ทำให้ฟังก์ชันเดียวใช้ได้หลายสถานการณ์
+
+dialog แบบ custom ปลอดภัยกว่า alert/confirm และควบคุมได้มากกว่า
+
+การใช้ DOM API แม่นยำกว่า innerHTML สำหรับ component แบบ dynamic
+
+[5] ความเข้าใจเรื่อง State (State Awareness)
+
+dialog มีสอง state หลัก: "เปิด" กับ "ถูกปิด"
+
+การคลิก OK / Cancel ต้องปิด overlay ก่อนเรียก callback
+
+ถ้ามี dialog ค้าง → ป้องกันโดยลบ overlay เก่าทุกครั้งก่อนสร้างอันใหม่
+
+[6] ข้อดี / ข้อเสียที่พบ (Pros & Cons)
+✔ ข้อดี
+
+UI ยืดหยุ่นมาก ปรับแต่งได้ทุกส่วน
+
+ใช้ซ้ำได้ทุกหน้าในโปรเจกต์เดียว
+
+รองรับทั้ง confirm และ info dialog โดยใช้ฟังก์ชันเดียว
+
+ปลอดภัยกว่า alert() / confirm()
+
+สามารถขยายเป็น component library ได้ในอนาคต
+
+✘ ข้อเสีย
+
+ต้องเขียน CSS + JS เองทั้งหมด
+
+ยังไม่รองรับการปิดด้วย ESC หรือคลิกพื้นที่นอก (ถ้าอยากเพิ่ม)
+
+หากใช้งานหลายส่วนพร้อมกัน อาจต้องจัด queue ให้ dialog
+
+[7] Key Takeaways
+
+Custom Dialog = ความยืดหยุ่นสูง + ควบคุม UX ได้เต็มที่
+
+DOM API ช่วยให้ component dynamic ปลอดภัย ใช้ซ้ำง่าย
+
+การออกแบบ callback-based dialog ช่วยให้ logic แยกจาก UI
+
+Close-first behavior สำคัญมากเพื่อป้องกัน overlay ซ้อน
+
+Component ตัวนี้สามารถนำไปใช้ใน CRUD, warning, confirm, info ได้หมด
+
+[8] Next Steps / สิ่งที่จะทำต่อ
+
+เพิ่มฟีเจอร์ปิด dialog ด้วย:
+
+ปุ่ม ESC
+
+คลิกพื้นหลัง overlay
+
+ทำ animation fade-in / fade-out
+
+แยก dialog เป็น module เช่น dialog.js + import/export
+
+เพิ่มชนิด dialog: success / warning / error
+
+ทำระบบ Promise-based dialog เช่น:
+
+const result = await showConfirmDialog("Delete?");
+if (result === "ok") deleteItem();
+
+รองรับ responsive design แบบ mobile-friendly
