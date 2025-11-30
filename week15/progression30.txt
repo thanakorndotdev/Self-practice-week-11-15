@@ -1,0 +1,161 @@
+Progression Summary: Asynchronous JavaScript (Async/Await + Parallel Execution + Custom Dialogs)
+
+Date: 30 Nov 2025
+Folder: 30nov25
+Topic: การทำงานแบบขนาน (Parallel Execution) ด้วย Promise.all + async/await + Custom Dialogs
+
+[0] สรุปภาพรวมของงาน (What I Built)
+
+ในงานนี้ได้พัฒนาโค้ดเกี่ยวกับ asynchronous JavaScript เพื่อจำลองระบบที่ทำงานหลายงานพร้อมกัน โดยประกอบด้วย:
+
+ฟังก์ชัน async หลายตัวที่ใช้เวลาไม่เท่ากัน
+
+การรันงาน แบบ sequential และ แบบ parallel เพื่อเทียบ performance
+
+สร้าง error case เพื่อทดสอบ behavior ของ Promise.all เมื่อมีงานใดล้มเหลว
+
+เพิ่มระบบ Custom Dialog UI เพื่อยืนยันการดำเนินการ (confirm) ด้วย DOM manipulation
+
+ผลลัพธ์ที่สังเกตได้:
+
+Parallel execution ให้ประสิทธิภาพดีกว่า sequential อย่างมาก
+
+Promise.all หยุดทั้งชุดเมื่อมีงานเดียว error
+
+Custom dialog ทำให้ UI มีความเป็นมืออาชีพและควบคุม flow ของผู้ใช้ได้ดีขึ้น
+
+[1] โครงสร้างและหน้าที่ของแต่ละส่วน (Separation of Concerns)
+1. asyncTask(name, time, isError)
+
+จำลอง async job ที่มีดีเลย์ time
+
+ส่งคืน Promise
+
+รองรับสถานการณ์ error ผ่าน isError
+
+2. runSequential()
+
+รันงานแบบทีละงานด้วย await
+
+ใช้เวลารวม = ผลรวมเวลาของทุก task
+
+3. runParallel()
+
+ใช้ Promise.all() เพื่อรันงานพร้อมกัน
+
+ใช้เวลาเท่ากับงานที่ช้าที่สุดเท่านั้น
+
+4. runParallelWithError()
+
+ทดสอบกรณี error
+
+ถ้ามีงานเดียว reject -> ทั้งชุด reject ทันที
+
+5. Custom Dialog UI (showConfirmDialog, showMessageDialog)
+
+ฟังก์ชันสร้าง dialog ด้วย DOM—ไม่ใช่ alert()
+
+ใช้สำหรับ confirm ก่อนดำเนินการ เช่น delete
+
+รายละเอียดย่อย:
+
+overlay + dialog container
+
+ปุ่ม Cancel / Confirm
+
+ปิด dialog อัตโนมัติหลังเลือก action
+
+รองรับ callback เช่น onConfirm
+
+[2] แนวคิดในการออกแบบ (Design Concepts)
+
+เปรียบเทียบความแตกต่างระหว่าง sequential และ parallel execution
+
+วัด performance ให้เห็นผลลัพธ์ที่จับต้องได้
+
+เพิ่ม UI interaction ผ่าน custom dialog เพื่อทำให้ระบบสมจริงขึ้น
+
+ทดลอง situational error เพื่อเข้าใจวิธี Promise ตอบสนองใน lifecycle ต่าง ๆ
+
+ออกแบบโค้ดให้แยกส่วน: logic, timing, UI
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+Promise.all() สำหรับ parallel execution
+
+async/await เพื่อให้อ่านง่ายและจัดการ flow
+
+Date.now() ใช้วัดเวลา execution
+
+try...catch ครอบ Promise.all เพื่อจัดการ error
+
+Custom dialog ด้วย:
+
+DOM API (createElement, appendChild)
+
+Event listeners
+
+overlay UI + button actions
+
+[4] สิ่งที่ได้เรียนรู้ (What I Learned)
+
+await ไม่ใช่คำสั่งที่ “บังคับให้รอทีละอัน” ถ้าแยกงานได้ก็รันคู่กันได้
+
+parallel execution ช่วยลดเวลาการทำงานอย่างเห็นได้ชัด (เช่น 9 วิ -> 3 วิ)
+
+Promise.all มีความ strict—งานเดียวพังคือชุดพัง
+
+การสร้าง dialog เองช่วยให้ UI ควบคุมได้สมบูรณ์กว่าการใช้ alert
+
+การผสม logic (async) + UI (dialog) ต้องวางโครงให้ดี ไม่งั้นโค้ดพันกัน
+
+[5] ความเข้าใจเรื่อง State ของ Promise (State Awareness)
+
+fulfilled ทุกงาน -> Promise.all คืนค่า array ของผลลัพธ์
+
+งานเดียว reject -> Promise.all reject ทันที
+
+ทำให้เห็นว่าการรวมงานในกลุ่มใหญ่ต้องตรวจสอบความเสี่ยงก่อนรัน
+
+[6] ข้อดี / ข้อเสียที่พบ (Pros & Cons)
+ข้อดี
+ประสิทธิภาพดีเมื่อสามารถรันงานพร้อมกัน
+
+โค้ดอ่านง่ายขึ้นเมื่อใช้ async/await
+
+Custom dialog ทำให้ UX ดีขึ้น
+
+การทดลอง error case ช่วยเข้าใจ promise lifecycle
+
+ข้อเสีย
+Promise.all ไม่เหมาะกับงานที่ต้องการผลลัพธ์บางส่วน (partial result)
+
+error หนึ่งตัวทำให้ระบบล้มทั้งชุด
+
+dialog ต้องจัดการ overlay และการปิดเอง (ต้องเขียน logic เพิ่ม)
+
+[7] Key Takeaways
+
+Promise.all คือหัวใจของ parallel execution
+
+async/await ทำให้การจัดการ async เป็นธรรมชาติมากกว่า then()
+
+Custom dialogues ช่วยให้ flow ของผู้ใช้ชัดเจนและปลอดภัยขึ้น
+
+การเข้าใจ behavior ตอน error ทำให้ระบบ robust และเสถียรขึ้น
+
+การแยก concerns ช่วยให้โค้ด maintain ง่าย
+
+[8] Next Steps / สิ่งที่จะทำต่อ
+
+ทดลอง Promise.allSettled() เพื่อรองรับ partial success
+
+ใช้ dialog แบบ message / warning ในหลายสถานการณ์
+
+นำ parallel execution ไปใช้โหลด API หลายตัวใน real project
+
+เพิ่ม UI loader แสดงสถานะงานแบบ real-time
+
+ทดลอง Promise.race() และ Promise.any() เพื่อเข้าใจ strategy เพิ่มเติม
+
+ปรับ dialog เป็น component reusable เช่น showDialog(type, options)

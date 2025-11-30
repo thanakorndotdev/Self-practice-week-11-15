@@ -1,0 +1,199 @@
+Progrssion29-30 : To-Do List App Progression Plan และ Asynchronous JavaScript Parallel Execution
+
+วันที่: 29–30 Nov 2025
+หัวข้อ: การพัฒนา To-Do List App แบบเป็นขั้น (Progression Plan) และการทดลอง 
+Asynchronous JavaScript ผ่าน Parallel Execution, Promise.all และ Custom Dialog UI
+
+Progression Summary: To-Do List App Progression Plan
+
+Date: 29 Nov 2025
+Folder: 29nov25
+Topic: To-Do List App Progression Plan
+
+[0] ภาพรวมของแผนงาน (Overview)
+
+โปรเจกต์นี้เป็นการวางแผนสร้าง To-Do List App แบบเป็นขั้นตอน เพื่อพัฒนาไปทีละ Stage ตั้งแต่การเพิ่มรายการพื้นฐานไปจนถึงระบบแก้ไขรายการและบันทึกข้อมูลด้วย LocalStorage ทั้งหมดถูกออกแบบให้เรียนรู้การจัดการ DOM การทำงานกับ event และการสร้างระบบที่ขยายต่อได้ง่ายขึ้น
+
+[1] Stage 1: Basic Task Adder
+
+เป้าหมายของขั้นนี้คือผู้ใช้สามารถเพิ่ม task ลงในลิสต์ได้
+สิ่งที่ทำคือ
+
+เพิ่ม input และปุ่ม Add ใน index.html
+
+เขียน JavaScript เพื่ออ่านค่าจาก input ผ่าน taskInput.value
+
+เมื่อกด Add สร้างองค์ประกอบ li และนำไปใส่ใน ul id="taskList"
+ผลลัพธ์คือระบบสามารถเพิ่มรายการได้ในเบื้องต้น
+
+[2] Stage 2: Mark Task as Done
+
+เป้าหมายคือให้ผู้ใช้คลิกเพื่อทำเครื่องหมายว่าทำงานเสร็จแล้ว
+สิ่งที่ทำคือ
+
+แยกข้อความ task ใส่ใน span
+
+ผูก event onclick เพื่อ toggle class done
+
+สร้าง CSS class done เพื่อให้ข้อความถูกขีดฆ่าและเปลี่ยนสี
+เป็นการเพิ่มการโต้ตอบขั้นพื้นฐานระหว่างผู้ใช้และ UI
+
+[3] Stage 3: Delete Task
+
+เป้าหมายเพื่อให้ผู้ใช้ลบรายการได้
+สิ่งที่ทำคือ
+
+เพิ่มปุ่ม X ในแต่ละ li
+
+เมื่อคลิกปุ่ม เรียก li.remove() เพื่อลบรายการ
+เป็นการจัดการ DOM ที่ต้องระวังโครงสร้างลูกของแต่ละรายการ
+
+[4] Stage 4: Press Enter to Add
+
+เพิ่มฟีเจอร์ให้ผู้ใช้กด Enter เพื่อเพิ่มรายการได้ทันที
+วิธีทำคือ
+
+ผูก keydown event ให้ input
+
+ตรวจ e.key === "Enter" แล้วเรียก addBtn.click()
+ช่วยเพิ่มความสะดวกในการใช้งานให้ลื่นไหลขึ้น
+
+[5] Stage 5 (Optional): Save to LocalStorage
+
+เป้าหมายคือทำให้รายการยังอยู่แม้หน้าเว็บถูก refresh
+สิ่งที่ทำคือ
+
+ใช้ localStorage.setItem และ localStorage.getItem
+
+เขียนฟังก์ชัน saveTasksToStorage และ loadTasksFromStorage
+
+เรียกโหลดข้อมูลเมื่อเปิดหน้าเว็บ
+เป็นการเพิ่ม persistent state ให้กับแอป
+
+[6] Stage 6 (Optional): Edit Task
+
+เป้าหมายเพื่อให้ผู้ใช้แก้ไขข้อความของ task ได้
+สิ่งที่ทำคือ
+
+ผูก ondblclick บน span เพื่อแปลงเป็น input ชั่วคราว
+
+เมื่อ blur หรือกด Enter ให้บันทึกข้อความและแทนกลับเป็น span
+เพิ่มความสามารถของระบบให้ครบวงจรมากขึ้น
+
+Progression Summary: Asynchronous JavaScript (Async/Await, Parallel Execution, Custom Dialogs)
+
+Date: 30 Nov 2025
+Folder: 30nov25
+Topic: การทำงานแบบขนานด้วย Promise.all และการผสมผสาน Custom Dialog UI
+
+[0] สรุปภาพรวมของงาน (What I Built)
+
+งานนี้เป็นการทดลองและพัฒนาการทำงานแบบ asynchronous โดยจำลองงานหลายงานที่ดีเลย์ต่างกัน รวมถึงการเทียบระหว่าง sequential และ parallel execution ด้วย Promise.all พร้อมสร้าง error case เพื่อศึกษาพฤติกรรมเมื่อ promise ล้มเหลว นอกจากนี้ยังผสาน Custom Dialog UI เข้าไปเพื่อควบคุมการยืนยันการทำงานในส่วนที่ต้องการ เช่นการกดลบหรือยืนยันคำสั่งต่าง ๆ
+
+ผลลัพธ์ที่สังเกตได้คือ
+
+การทำงานแบบ parallel เร็วกว่ามากเมื่อเทียบกับ sequential
+
+Promise.all จะ reject ทันทีเมื่อมีงานเดียวล้มเหลว
+
+Custom dialog ให้ประสบการณ์ที่ดีกว่า alert และยืดหยุ่นกว่า
+
+[1] โครงสร้างและหน้าที่ของแต่ละส่วน (Separation of Concerns)
+
+asyncTask(name, time, isError)
+จำลองงานที่ดีเลย์ตามเวลาที่กำหนด ส่งกลับเป็น promise และสามารถจำลอง error ผ่าน flag
+
+runSequential()
+รันงานทีละตัวด้วย await โดยใช้เวลารวมตามผลรวมของแต่ละงาน
+
+runParallel()
+ใช้ Promise.all เพื่อรันงานพร้อมกัน ใช้เวลาตามงานที่ช้าที่สุด
+
+runParallelWithError()
+จำลองกรณี error เมื่อหนึ่งงาน reject ทำให้ทั้งชุด reject
+
+Custom Dialog UI
+สร้างระบบ dialog confirm และ dialog message ด้วย DOM
+ใช้ overlay, container, ปุ่ม Confirm และ Cancel รองรับ callback สำหรับ onConfirm หรือ onCancel
+
+[2] แนวคิดในการออกแบบ (Design Concepts)
+
+แยกการทดลอง async ออกเป็น sequential และ parallel เพื่อให้เห็นบริบทการทำงานที่ต่างกัน
+
+ออกแบบ UI interaction ผ่าน custom dialog เพื่อเลี่ยงการใช้ alert และควบคุม flow ได้มากขึ้น
+
+สร้าง error case เพื่อศึกษา behavior ของ Promise ใน lifecycle ต่าง ๆ
+
+แยกส่วน logic, timing, และ UI เพื่อให้ระบบแก้ไขและขยายได้ง่าย
+
+[3] เทคนิคที่ใช้ (Core Techniques)
+
+async และ await เพื่อจัดการลำดับการทำงาน
+
+Promise.all สำหรับงานแบบ parallel
+
+try catch เพื่อจับ error ของ promise
+
+Date.now เพื่อวัดเวลารวมของงาน
+
+การสร้าง custom dialog ผ่าน DOM เช่น createElement, appendChild และผูก event listeners
+
+[4] สิ่งที่ได้เรียนรู้ (What I Learned)
+
+await ไม่จำเป็นต้องรันแบบทีละงานเสมอ ถ้าจัดวาง promise ให้รันคู่กันได้ก็รัน parallel ได้
+
+Parallel execution ช่วยลดเวลาอย่างชัดเจนในงานที่เป็นอิสระต่อกัน
+
+Promise.all มีข้อจำกัดเมื่อมี error ตัวเดียว
+
+Custom dialog ให้ UI ที่ควบคุมง่ายกว่า alert
+
+การผสม asynchronous logic และ UI ต้องแยกโครงสร้างอย่างชัดเพื่อไม่ให้โค้ดซ้อนทับกัน
+
+[5] ความเข้าใจเรื่องสถานะของ Promise (State Awareness)
+
+fulfilled ทุกตัว: Promise.all คืน array ของผลลัพธ์
+
+reject แค่ตัวเดียว: ทั้งชุด reject
+
+เป็นการตอกย้ำว่าในระบบที่ต้องรวมงานหลายตัวพร้อมกันต้องตรวจสอบความเสี่ยง
+
+[6] ข้อดีและข้อเสีย (Pros and Cons)
+
+ข้อดี
+
+ประสิทธิภาพดีขึ้นเมื่อใช้ parallel
+
+โค้ดอ่านง่ายขึ้นเมื่อใช้ async await
+
+Custom dialog ให้ UX ที่ดีและควบคุม flow ได้
+
+เรียนรู้การจัดการ error ของ promise แบบลึกซึ้ง
+
+ข้อเสีย
+
+Promise.all ไม่รองรับผลลัพธ์บางส่วนถ้าบางงานล้มเหลว
+
+ต้องเขียน logic จัดการ overlay และการปิด dialog เพิ่มเอง
+
+[7] Key Takeaways
+
+Promise.all เป็นหัวใจของงาน parallel
+
+async await ทำให้โค้ดลื่นไหลและอ่านง่าย
+
+Custom dialog ทำให้ระบบมีความเป็นมืออาชีพ
+
+การเข้าใจ behavior ของ promise ช่วยให้ระบบ robust
+
+[8] Next Steps
+
+ทดลอง Promise.allSettled เพื่อรองรับ partial result
+
+เพิ่ม dialog ในหลายสถานการณ์
+
+นำ parallel execution ไปใช้โหลดข้อมูลหลาย endpoint
+
+เพิ่ม UI loader เพื่อแสดงสถานะการทำงาน
+
+ทดลอง Promise.race และ Promise.any เพิ่มเติม

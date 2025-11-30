@@ -1,0 +1,61 @@
+Progression Summary: To-Do List App Progression Plan
+
+Date: 29 Nov 2025
+Folder: 29nov25
+Topic: To-Do List App Progression Plan
+
+Stage 1: Basic Task Adder
+
+เป้าหมาย: ผู้ใช้สามารถกรอกข้อความแล้วกดปุ่ม Add เพื่อเพิ่มรายการลงในลิสต์
+
+ สร้าง <input> และ <button> ใน index.html
+
+ เชื่อมต่อ JavaScript (main.js หรือ app.js)
+
+ อ่านค่าจาก input (taskInput.value)
+
+ เมื่อกดปุ่ม Add → สร้าง <li> ที่มีข้อความจาก input แล้วเพิ่มไปใน <ul id="taskList">
+
+Stage 2: ตีเส้นรายการที่ทำเสร็จ
+
+เป้าหมาย: ผู้ใช้คลิกที่ข้อความเพื่อ mark ว่า task เสร็จแล้ว (ขีดฆ่า)
+
+ สร้าง <span> แยกไว้ใน <li> สำหรับข้อความ task
+
+ ใส่ event onclick บน <span> → toggle class "done"
+
+ เขียน CSS class .done เพื่อให้มี text-decoration: line-through; color: gray;
+
+Stage 3: ลบรายการ
+
+เป้าหมาย: เพิ่มปุ่ม "X" ข้าง task เพื่อลบรายการออกจากลิสต์
+
+ สร้าง <button> ใน <li> เพื่อเป็นปุ่มลบ
+
+ ใส่ event onclick → เรียก li.remove() เมื่อลบ
+
+Stage 4: กด Enter เพื่อเพิ่ม
+
+เป้าหมาย: ผู้ใช้กด Enter ใน input field แล้วเพิ่ม task ได้โดยไม่ต้องคลิกปุ่ม
+
+ ผูก event keydown กับ input field
+
+ เช็คว่า e.key === "Enter" แล้วเรียก addBtn.click()
+
+Stage 5 (Optional): บันทึกข้อมูลใน LocalStorage
+
+เป้าหมาย: รายการยังคงอยู่แม้ refresh หน้า
+
+ ใช้ localStorage.setItem() และ localStorage.getItem() เพื่อเก็บและโหลด task
+
+ เขียนฟังก์ชัน saveTasksToStorage() และ loadTasksFromStorage()
+
+ เรียก loadTasksFromStorage() เมื่อโหลดหน้า
+
+Stage 6 (Optional): เพิ่มการแก้ไขรายการ
+
+เป้าหมาย: ผู้ใช้สามารถ double-click ที่ task เพื่อแก้ไขข้อความ
+
+ ผูก event ondblclick บน <span> → เปลี่ยนเป็น <input> editable
+
+ เมื่อ blur หรือกด Enter → แก้ไขข้อความและแทนที่กลับเป็น <span>
